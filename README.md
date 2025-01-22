@@ -1,6 +1,6 @@
 # Tarea: Cuatro en raya
 ## Profesor: José Ramón Jiménez Reyes
-## Alumno:
+## Alumno: Raúl Martínez Martínez
 
 Se trata de realizar un programa en java que simule el juego de las cuatro en raya.
 
