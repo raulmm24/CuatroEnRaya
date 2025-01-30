@@ -11,7 +11,7 @@ class JugadorTest {
 
 	@ParameterizedTest(name = "Cuando se llama al constructor con nombre {0} y color de fichas {1} se crea el jugador correctamente.")
 	@CsvSource({"José Ramón, AZUL", "Inés, VERDE"})
-	void constructorNombreValidoFichaValidaCreaJugadorCorrectamente(String nombre, Ficha colorFichas) {
+	void constructorNombreValidoFichaValidaCreaJugadorCorrectamente(String nombre, Ficha colorFichas)  {
 		Jugador jugador = new Jugador(nombre, colorFichas);
 		assertEquals(nombre, jugador.nombre());
 		assertEquals(colorFichas, jugador.colorFichas());
@@ -38,7 +38,7 @@ class JugadorTest {
 
 	@ParameterizedTest(name = "Cuando se llama a toString para un jugador con nombre: {0} y color de fichas: {1}, la salida es: {2}")
 	@CsvSource({"José Ramón, AZUL, José Ramón (A)", "Inés, VERDE, Inés (V)"})
-	void toStringDevuelveCadenaCorrectamente(String nombre, Ficha colorFichas, String salida) {
+	void toStringDevuelveCadenaCorrectamente(String nombre, Ficha colorFichas, String salida)  {
 		Jugador jugador = new Jugador(nombre, colorFichas);
 		assertEquals(salida, jugador.toString());
 	}
