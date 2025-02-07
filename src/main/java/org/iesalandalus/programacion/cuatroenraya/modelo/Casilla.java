@@ -17,7 +17,7 @@ public class Casilla {
         Objects.requireNonNull(ficha,"No se puede poner una ficha nula.");
 
         if (estaOcupada()) {
-          throw new CuatroEnRayaExcepcion("La casilla ya contiene una ficha.");
+          throw new CuatroEnRayaExcepcion("Columna llena.");
         }
         this.ficha = ficha;
     }
