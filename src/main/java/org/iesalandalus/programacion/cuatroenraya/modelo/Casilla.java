@@ -30,7 +30,6 @@ public class Casilla {
 
     @Override
     public String toString() {
-        // Devuelve " " si es null, o el toString de la ficha ("A" o "V") si está ocupada
         return (!estaOcupada()) ? " " : ficha.toString();
     }
 }
