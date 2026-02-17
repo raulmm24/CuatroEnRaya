@@ -23,7 +23,6 @@ public record Jugador(String nombre, Ficha colorFichas) {
 
     @Override
     public String toString() {
-        char inicialColor = colorFichas.name().charAt(0);
-        return String.format("%s (%s)", nombre, inicialColor);
+        return String.format("%s (%s)", nombre, colorFichas);
     }
 }

@@ -7,7 +7,7 @@ public enum Ficha {
 
     @Override
     public String toString() {
-        return String.valueOf(name().charAt(0));
+        return name().substring(0, 1);
     }
 }
 
