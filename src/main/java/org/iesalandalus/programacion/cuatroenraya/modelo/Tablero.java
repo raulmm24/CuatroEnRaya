@@ -1,5 +1,7 @@
 package org.iesalandalus.programacion.cuatroenraya.modelo;
 
+import java.util.Objects;
+
 public class Tablero {
 
     public static final int FILAS = 6;
@@ -17,13 +19,21 @@ public class Tablero {
         }
     }
 
+    public boolean columnaVacia(int columna) {
+        comprobarColumna(columna);
+        return !casillas[FILAS - 1][columna].estaOcupada();
+    }
+
     public boolean estaVacio() {
-        for (int f = 0; f < FILAS; f++) {
-            for (int c = 0; c < COLUMNAS; c++) {
-                if (casillas[f][c].estaOcupada()) return false;
-            }
+        for (int c = 0; c < COLUMNAS; c++) {
+            if (!columnaVacia(c)) return false;
         }
         return true;
+    }
+
+    public boolean columnaLlena(int columna) {
+        comprobarColumna(columna);
+        return casillas[0][columna].estaOcupada();
     }
 
     public boolean estaLleno() {
@@ -33,17 +43,31 @@ public class Tablero {
         return true;
     }
 
-    public boolean columnaLlena(int columna) {
-        return casillas[0][columna].estaOcupada();
+    private void comprobarFicha(Ficha ficha) {
+        Objects.requireNonNull(ficha, "La ficha no puede ser nula.");
     }
 
-    public boolean introducirFicha(int columna, Ficha ficha) {
+    private void comprobarColumna(int columna) {
         if (columna < 0 || columna >= COLUMNAS) {
             throw new IllegalArgumentException("Columna incorrecta.");
         }
-        if (ficha == null) {
-            throw new NullPointerException("La ficha no puede ser nula.");
+    }
+
+    private int getPrimeraFilaVacia(int columna) {
+        for (int f = FILAS - 1; f >= 0; f--) {
+            if (!casillas[f][columna].estaOcupada()) return f;
         }
+        return -1;
+    }
+
+    private boolean objetivoAlcanzado(int consecutivas) {
+        return consecutivas >= FICHAS_IGUALES_CONSECUTIVAS_NECESARIAS;
+    }
+
+    public boolean introducirFicha(int columna, Ficha ficha) {
+        comprobarColumna(columna);
+        comprobarFicha(ficha);
+
         if (columnaLlena(columna)) {
             throw new CuatroEnRayaExcepcion("Columna llena.");
         }
@@ -52,13 +76,6 @@ public class Tablero {
         casillas[fila][columna].setFicha(ficha);
 
         return comprobarTirada(fila, columna, ficha);
-    }
-
-    private int getPrimeraFilaVacia(int columna) {
-        for (int f = FILAS - 1; f >= 0; f--) {
-            if (!casillas[f][columna].estaOcupada()) return f;
-        }
-        return -1;
     }
 
     private boolean comprobarTirada(int fila, int columna, Ficha ficha) {
@@ -73,7 +90,7 @@ public class Tablero {
         for (int c = 0; c < COLUMNAS; c++) {
             if (casillas[fila][c].estaOcupada() && casillas[fila][c].getFicha().equals(ficha)) {
                 consecutivas++;
-                if (consecutivas == FICHAS_IGUALES_CONSECUTIVAS_NECESARIAS) return true;
+                if (objetivoAlcanzado(consecutivas)) return true;
             } else {
                 consecutivas = 0;
             }
@@ -86,54 +103,50 @@ public class Tablero {
         for (int f = 0; f < FILAS; f++) {
             if (casillas[f][columna].estaOcupada() && casillas[f][columna].getFicha().equals(ficha)) {
                 consecutivas++;
-                if (consecutivas == FICHAS_IGUALES_CONSECUTIVAS_NECESARIAS) return true;
+                if (objetivoAlcanzado(consecutivas)) return true;
             } else {
                 consecutivas = 0;
             }
-        }
-        return false;
-    }
-
-    private boolean comprobarDiagonalNE(int fila, int columna, Ficha ficha) {
-        int desplazamiento = menor(FILAS - 1 - fila, columna);
-        int filaInicio = fila + desplazamiento;
-        int colInicio = columna - desplazamiento;
-
-        int consecutivas = 0;
-        while (filaInicio >= 0 && colInicio < COLUMNAS) {
-            if (casillas[filaInicio][colInicio].estaOcupada() && casillas[filaInicio][colInicio].getFicha().equals(ficha)) {
-                consecutivas++;
-                if (consecutivas == FICHAS_IGUALES_CONSECUTIVAS_NECESARIAS) return true;
-            } else {
-                consecutivas = 0;
-            }
-            filaInicio--;
-            colInicio++;
-        }
-        return false;
-    }
-
-    private boolean comprobarDiagonalNO(int fila, int columna, Ficha ficha) {
-        int desplazamiento = menor(FILAS - 1 - fila, COLUMNAS - 1 - columna);
-        int filaInicio = fila + desplazamiento;
-        int colInicio = columna + desplazamiento;
-
-        int consecutivas = 0;
-        while (filaInicio >= 0 && colInicio >= 0) {
-            if (casillas[filaInicio][colInicio].estaOcupada() && casillas[filaInicio][colInicio].getFicha().equals(ficha)) {
-                consecutivas++;
-                if (consecutivas == FICHAS_IGUALES_CONSECUTIVAS_NECESARIAS) return true;
-            } else {
-                consecutivas = 0;
-            }
-            filaInicio--;
-            colInicio--;
         }
         return false;
     }
 
     private int menor(int a, int b) {
         return Math.min(a, b);
+    }
+
+    private boolean comprobarDiagonalNE(int fila, int columna, Ficha ficha) {
+        int desplazamiento = menor(fila, columna);
+        int filaInicio = fila - desplazamiento;
+        int colInicio = columna - desplazamiento;
+
+        int consecutivas = 0;
+        for (int f = filaInicio, c = colInicio; f < FILAS && c < COLUMNAS; f++, c++) {
+            if (casillas[f][c].estaOcupada() && casillas[f][c].getFicha().equals(ficha)) {
+                consecutivas++;
+                if (objetivoAlcanzado(consecutivas)) return true;
+            } else {
+                consecutivas = 0;
+            }
+        }
+        return false;
+    }
+
+    private boolean comprobarDiagonalNO(int fila, int columna, Ficha ficha) {
+        int desplazamiento = menor(fila, COLUMNAS - 1 - columna);
+        int filaInicio = fila - desplazamiento;
+        int colInicio = columna + desplazamiento;
+
+        int consecutivas = 0;
+        for (int f = filaInicio, c = colInicio; f < FILAS && c >= 0; f++, c--) {
+            if (casillas[f][c].estaOcupada() && casillas[f][c].getFicha().equals(ficha)) {
+                consecutivas++;
+                if (objetivoAlcanzado(consecutivas)) return true;
+            } else {
+                consecutivas = 0;
+            }
+        }
+        return false;
     }
 
     @Override
