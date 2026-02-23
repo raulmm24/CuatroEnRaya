@@ -115,8 +115,8 @@ public class Tablero {
         return false;
     }
 
-    private int menor(int a, int b) {
-        return Math.min(a, b);
+    private int menor(int fila, int columna) {
+        return Math.min(fila, columna);
     }
 
     private boolean comprobarDiagonalNE(int fila, int columna, Ficha ficha) {
