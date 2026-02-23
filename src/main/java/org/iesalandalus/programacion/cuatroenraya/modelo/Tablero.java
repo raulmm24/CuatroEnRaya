@@ -20,25 +20,27 @@ public class Tablero {
     }
 
     public boolean columnaVacia(int columna) {
-        comprobarColumna(columna);
         return !casillas[FILAS - 1][columna].estaOcupada();
     }
 
     public boolean estaVacio() {
-        for (int c = 0; c < COLUMNAS; c++) {
-            if (!columnaVacia(c)) return false;
+        for (int i = 0; i < COLUMNAS; i++) {
+            if (!columnaVacia(i)) {
+                return false;
+            }
         }
         return true;
     }
 
     public boolean columnaLlena(int columna) {
-        comprobarColumna(columna);
         return casillas[0][columna].estaOcupada();
     }
 
     public boolean estaLleno() {
-        for (int c = 0; c < COLUMNAS; c++) {
-            if (!columnaLlena(c)) return false;
+        for (int i = 0; i < COLUMNAS; i++) {
+            if (!columnaLlena(i)) {
+                return false;
+            }
         }
         return true;
     }
@@ -54,8 +56,10 @@ public class Tablero {
     }
 
     private int getPrimeraFilaVacia(int columna) {
-        for (int f = FILAS - 1; f >= 0; f--) {
-            if (!casillas[f][columna].estaOcupada()) return f;
+        for (int i = FILAS - 1; i >= 0; i--) {
+            if (!casillas[i][columna].estaOcupada()) {
+                return i;
+            }
         }
         return -1;
     }
