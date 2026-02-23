@@ -119,10 +119,10 @@ public class Tablero {
         return Math.min(fila, columna);
     }
 
-    private boolean comprobarDiagonalNE(int fila, int columna, Ficha ficha) {
-        int desplazamiento = menor(fila, columna);
-        int filaInicio = fila - desplazamiento;
-        int colInicio = columna - desplazamiento;
+    private boolean comprobarDiagonalNE(int filaActual, int columnaActual, Ficha ficha) {
+        int desplazamiento = menor(filaActual, columnaActual);
+        int filaInicio = filaActual - desplazamiento;
+        int colInicio = columnaActual - desplazamiento;
 
         int consecutivas = 0;
         for (int f = filaInicio, c = colInicio; f < FILAS && c < COLUMNAS; f++, c++) {
@@ -136,10 +136,10 @@ public class Tablero {
         return false;
     }
 
-    private boolean comprobarDiagonalNO(int fila, int columna, Ficha ficha) {
-        int desplazamiento = menor(fila, COLUMNAS - 1 - columna);
-        int filaInicio = fila - desplazamiento;
-        int colInicio = columna + desplazamiento;
+    private boolean comprobarDiagonalNO(int filaActual, int columnaActual, Ficha ficha) {
+        int desplazamiento = menor(filaActual, COLUMNAS - 1 - columnaActual);
+        int filaInicio = filaActual - desplazamiento;
+        int colInicio = columnaActual + desplazamiento;
 
         int consecutivas = 0;
         for (int f = filaInicio, c = colInicio; f < FILAS && c >= 0; f++, c--) {
