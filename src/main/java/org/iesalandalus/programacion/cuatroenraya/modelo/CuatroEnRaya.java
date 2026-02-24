@@ -4,6 +4,7 @@ import org.iesalandalus.programacion.cuatroenraya.vista.Consola;
 
 public class CuatroEnRaya {
     private static final int NUMERO_JUGADORES = 2;
+
     private final Jugador[] jugadores;
     private final Tablero tablero;
 
@@ -13,23 +14,6 @@ public class CuatroEnRaya {
         }
         this.jugadores = new Jugador[]{jugador1,jugador2};
         this.tablero = new Tablero();
-    }
-
-    private boolean tirar(Jugador jugador) {
-        boolean tiradaValida = false;
-        boolean objetivoAlcanzado = false;
-
-        do {
-            try {
-                int columna = Consola.leerColumna(jugador);
-                objetivoAlcanzado = tablero.introducirFicha(columna, jugador.colorFichas());
-                tiradaValida = true;
-            } catch (IllegalArgumentException | CuatroEnRayaExcepcion e) {
-                System.out.println(e.getMessage());
-            }
-        } while (!tiradaValida);
-
-        return objetivoAlcanzado;
     }
 
     public void jugar() {
@@ -49,11 +33,27 @@ public class CuatroEnRaya {
         }
 
         if (victoria) {
-            Consola.mostrarGanador(jugadorActual);
+            System.out.printf("ENHORABUENA, %s has ganado", jugadorActual.nombre());
         } else {
             System.out.println("¡Habéis empatado! El tablero está lleno.");
         }
     }
 
+    private boolean tirar(Jugador jugador) {
+        boolean tiradaValida = false;
+        boolean objetivoAlcanzado = false;
+
+        do {
+            try {
+                int columna = Consola.leerColumna(jugador);
+                objetivoAlcanzado = tablero.introducirFicha(columna, jugador.colorFichas());
+                tiradaValida = true;
+            } catch (IllegalArgumentException | CuatroEnRayaExcepcion e) {
+                System.out.println(e.getMessage());
+            }
+        } while (!tiradaValida);
+
+        return objetivoAlcanzado;
+    }
 
 }

@@ -12,7 +12,7 @@ public class Main {
 		System.out.println("Introduce los datos del Primer Jugador: ");
 		Jugador jugador1 = Consola.leerJugador();
 
-		Ficha colorJ2 =(jugador1.colorFichas() == Ficha.AZUL) ? Ficha.VERDE : Ficha.AZUL;
+		Ficha colorJ2 = (jugador1.colorFichas() == Ficha.AZUL) ? Ficha.VERDE : Ficha.AZUL;
 
 		System.out.println("Introduce los datos del Segundo Jugador: ");
 		Jugador jugador2 = Consola.leerJugador(colorJ2);
